@@ -1,19 +1,20 @@
 # AsciiLaser
-AL is interpreted, AsciiDots inspired, visual programming language.
+AL is interpreted, AsciiDots inspired, visual programming language.  
 The code is being executed on a board of unlimited size. Tick time is not constant, they are executed as fast as possible unless in debug mode. Program is terminated if TODO
 
 ## Data types
 
 ### Lasers
-Lasers have a frequency (value) between 0 and 2^64 - 1.
-Lasers frequencyies have special behavior when extremly high or extremly low. They overflow.
-Lasers travel instantly on a straight line between 2 objects (for example bethween 2 mirrors)
-Lasers can travel over wire objects without influencing each other.
-Lasers that hit the board edge get teleported to the other end. (The board is a 3D torus)
+Lasers have a frequency (value) between 0 and 2^64 - 1. (unsigned 64 bit int)  
+Lasers frequencies overflow.  
+Lasers travel instantly on a straight line between 2 objects (for example bethween 2 mirrors)  
+Lasers travel over wire objects without influencing each other.  
+Laser that hit the board edge get teleported to the other end. (The board is a 3D torus)  
 
 ### Current
 Current can only hold 0 or 1.
-Current moves instantly along the entire wire.
+Current moves instantly along the entire wire.  
+When objects get powered by current, they alter their state (for example mirrors rotate)
 
 ## Objects
 Objects is a single ascii character that has some functionality in the language.
@@ -53,7 +54,7 @@ Used when you need to slow down the laser 1 tick.
 Lasers from left and right are deleted.
 
 ### Laser modifiers
-the laser modifier character needs to be connected to a output mirror that sets the output direction. all unconnected sides are considered to be equaly viable inputs.
+the laser modifier character needs to be connected to a output mirror that sets the output direction. all unconnected sides are considered to be equaly viable inputs.  
 Examples:
 ```
 m
@@ -66,24 +67,24 @@ v
 ```
 Incrementer with input up and left, Output is send down and right.
 
-#### *
+#### `*`
 Reflects laser into all connected outputs.
 
-#### i
+#### `i`
 Increments the laser frequency by 1.
 
-#### d
+#### `d`
 Decrements the laser frequency by 1.
 
-#### m
+#### `m`
 Multiplies the laser frequency by 1.
 
-#### 0123456789ABCDEF
-Sets the laser frequency to the value (hexadecimal)
+#### Any of `0123456789ABCDEF`
+Sets the laser frequency to the value (hexadecimal)  
 There is no built in way of setting laser frequency higher
 
 ### Wire
-Wire can transport current.
+Wire can transport current.  
 There are 5 wire objects:
 
 #### `-`
@@ -92,26 +93,28 @@ Vertical wire.
 #### `|`
 Horizontal wire.
 
-#### `\``
-up-left-right connection
-
-#### `.`
-down-left-right connection
-
 #### `+`
-Wire crossing. Wires are not connected.
-For example:
+Wire crossing. Wires are not connected.  
+For example:  
 3 unconnected wires crossing each other.
+```
+ | |
+-+-+-
+ | |
+-+-O
+ |
+```
+The same code but smaller:
 ```
  ||
 -++-
--+`
+-+O
  |
 ```
 #### `O`
 Wire crossing. Wires are connected.
-Only horizontal wires above and below and vertical wires to the left and right are connected.
-For example:
+Only horizontal wires above and below, vertical wires to the left and right and other wire crossing are connected.  
+For example:  
 Two unconnected wires turning right
 ```
 O--
