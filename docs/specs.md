@@ -3,6 +3,15 @@ AsciiLaser is interpreted, AsciiDots inspired, text based, case sensitive, visua
 The code is being executed on a board of unlimited size. Tick time is not constant, they are executed as fast as possible unless in debug mode. Program is terminated if there are no more lasers traveling or any laser hits the `}` object.
 AL code file extension is `.al`.
 
+## Comments
+Comments start with `[` and end with `]` every character from `[` to `]` including `[` and `]` are threated as spaces when compiling.  
+Example:
+```
+this is not comment [ but this is
+this is still comment this too and this [ this too
+this still is ] this is not
+```
+
 ## Data types
 
 ### Lasers
@@ -100,9 +109,6 @@ Increments the laser frequency by 1.
 #### `d`
 Decrements the laser frequency by 1.
 
-#### `m`
-Multiplies the laser frequency by 1.
-
 #### Any of `0123456789ABCDEF`
 Sets the laser frequency to the value (hexadecimal)  
 There is no built in way of setting laser frequency higher
@@ -113,7 +119,7 @@ Any laser that hits `#` from any direction gets deleted.
 #### `m`
 Multiplication
 
-#### `d`
+#### `n`
 Division
 
 #### `a`
@@ -122,7 +128,7 @@ Addition
 #### `s`
 Subtraction
 
-#### `d`
+#### `l`
 Modulo
 
 ### Wire
