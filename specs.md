@@ -83,6 +83,24 @@ Multiplies the laser frequency by 1.
 Sets the laser frequency to the value (hexadecimal)  
 There is no built in way of setting laser frequency higher
 
+### Laser sources
+Objects, that generate lasers on demand, automatically or by user input.
+They need to be connected to mirrors like modifiers.
+There are 4 laser sources:
+
+#### `TODO`
+Starting source. It creates a laser with random power, when the program starts,
+or on demand using current.
+
+#### `TODO`
+Basic laser source. It creates a random laser, when it recieves current.
+
+#### `I`
+User input. It prompts the user to input a number and send a laser with that power.
+
+#### `TODO`
+Duplicator. It recieves a laser and returns the same laser twice.
+
 ### Wire
 Wire can transport current.  
 There are 5 wire objects:
