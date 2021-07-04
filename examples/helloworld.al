@@ -1,4 +1,4 @@
-//       h   e   l   l   o   _   w   o   r   l   d
+        [h   e   l   l   o   _   w   o   r   l   d]
 {>a*> m> *>*>*>*>*>*>*>*>*>*>*>*>*>*>*>*>*>*>*>*>*>v
    v     v v v v v v v v v v v v v v v v v v v v v
    >  ^                          i F

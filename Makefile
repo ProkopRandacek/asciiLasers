@@ -1,16 +1,9 @@
 NAME = asciilaser
-CC = gcc
+CC = g++
 
-SOURCES = $(wildcard src/*.c)
+SOURCES = $(wildcard src/*.cpp)
 
-CC_WFLAGS = -Wall -Wextra -Wuninitialized -Wunreachable-code -Wfloat-equal -Wundef -Wshadow -Winit-self -Wno-misleading-indentation
-CC_FFLAGS = -fshort-enums
-CC_FLAGS  = $(CC_WFLAGS) $(CC_FFLAGS) -std=c99 -march=native -Ofast #-g -pg
-CC_LIB    = -lm
-
-BUILD_NAME = $(shell git rev-parse --short HEAD)
-
-CC_FULL = $(CC_INCLUDES) $(CC_FLAGS) $(CC_LIB) -DBUILD_NAME=\"$(BUILD_NAME)\"
+CC_FULL = -Wall -Wextra -Werror
 
 .PHONY: build
 

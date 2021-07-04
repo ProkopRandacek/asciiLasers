@@ -19,7 +19,7 @@ Lasers have a frequency (value) between 0 and 2^64 - 1. (unsigned 64 bit int)
 Lasers frequencies overflow.  
 Lasers travel instantly on a straight line between 2 objects (for example bethween 2 mirrors)  
 Lasers travel over wire objects without influencing each other.  
-Laser that hit the board edge get teleported to the other end. (The board is a 3D torus)  
+Laser that hit the board edge get teleported to the other end.
 
 ### Current
 Current can only hold 0 or 1.

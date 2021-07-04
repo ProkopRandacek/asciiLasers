@@ -1,4 +1,4 @@
 # asciiLasers
 
-Language specification: [specs.md](./specs.md)  
-Implementation notes: [implementations.md](./implementation.md)
+Language specification: [specs.md](./docs.specs.md)  
+Implementation notes: [implementations.md](./docs/implementation.md)
