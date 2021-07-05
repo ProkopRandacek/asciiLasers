@@ -1,6 +1,6 @@
 # AsciiLaser
 AsciiLaser is interpreted, AsciiDots inspired, text based, case sensitive, visual programming language.  
-The code is being executed on a board of unlimited size. Tick time is not constant, they are executed as fast as possible unless in debug mode. Program is terminated if there are no more lasers traveling or any laser hits the `}` object.
+The code is being executed on a board of unlimited size. Tick time is not constant, they are executed as fast as possible unless in debug mode. Program is terminated if there are no more lasers traveling or any laser hits the `}` block.
 AL code file extension is `.al`.
 
 ## Comments
@@ -17,17 +17,17 @@ this still is ] this is not
 ### Lasers
 Lasers have a frequency (value) between 0 and 2^64 - 1. (unsigned 64 bit int)  
 Lasers frequencies overflow.  
-Lasers travel instantly on a straight line between 2 objects (for example bethween 2 mirrors)  
-Lasers travel over wire objects without influencing each other.  
+Lasers travel instantly on a straight line between 2 blocks (for example bethween 2 mirrors)  
+Lasers travel over wire blocks without influencing each other.  
 Laser that hit the board edge get teleported to the other end.
 
 ### Current
 Current can only hold 0 or 1.
 Current moves instantly along the entire wire.  
-When objects get powered by current, they alter their state (for example mirrors rotate)
+When blocks get powered by current, they alter their state (for example mirrors rotate)
 
-## Objects
-Objects is a single ascii character that has some functionality in the language.
+## Blocks
+Block is a single ascii character that has some functionality in the language.
 
 ### IO
 
@@ -44,19 +44,19 @@ Example:
 ```
 
 #### `{`
-The start point of the program. Sends a laser to the right with frequency of 1 when the program starts.
+The start point of the program. Sends a laser to the right with frequency of 1 through all of its output mirrors.
 
 #### `}`
-The end point of the program. When laser hits this object, the program ends execution and that laser's value gets used as exit code.
+The end point of the program. When any laser hits this blocks, the program ends execution and that laser's value gets used as exit code.
 
 #### `_`
-When laser hits this object, user is prompted for a number. All code execution is paused until user types in valid laser value that is then applied to the input laser.
+When laser hits this blocks, user is prompted for a number. All code execution is paused until user types in valid laser value that is then applied to the input laser.
 
 ### Mirrors
 Lasers take 1 tick to go through a mirror
 On the rising edge of recieved current, mirrors rotate.
 Rotation is done clockwise. (\ -> /, ^ -> >, > -> v, v -> <, < -> ^)
-There are 8 mirror objects:
+There are 8 mirror blocks:
 
 #### `\`
 Reflects lasers coming from up to right, right to up, down to left and left to down.
@@ -133,7 +133,7 @@ Modulo
 
 ### Wire
 Wire can transport current.  
-There are 5 wire objects:
+There are 5 wire blocks:
 
 #### `-`
 Vertical wire.
