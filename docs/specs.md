@@ -4,7 +4,7 @@ The code is being executed on a board of unlimited size. Tick time is not consta
 AL code file extension is `.al`.
 
 ## Comments
-Comments start with `[` and end with `]` every character from `[` to `]` including `[` and `]` are threated as spaces when compiling.  
+Comments start with `[` and end with `]` every character from `[` to `]` including `[` and `]` are treated as spaces when compiling.  
 Example:
 ```
 this is not comment [ but this is
@@ -17,9 +17,8 @@ this still is ] this is not
 ### Lasers
 Lasers have a frequency (value) between 0 and 2^64 - 1. (unsigned 64 bit int)  
 Lasers frequencies overflow.  
-Lasers travel instantly on a straight line between 2 blocks (for example bethween 2 mirrors)  
+Lasers travel instantly on a straight line between 2 blocks (for example between 2 mirrors)  
 Lasers travel over wire blocks without influencing each other.  
-Laser that hit the board edge get teleported to the other end.
 
 ### Current
 Current can only hold 0 or 1.
@@ -27,7 +26,23 @@ Current moves instantly along the entire wire.
 When blocks get powered by current, they alter their state (for example mirrors rotate)
 
 ## Blocks
-Block is a single ascii character that has some functionality in the language.
+Block is a single ascii character that has some functionality in the language.  
+All blocks have output mirrors except for mirror blocks  
+Examples:
+```
+m
+v
+```
+Multiplier with inputs from up, left and right. Output is send down.
+```
+i>
+v
+```
+Incrementer with input up and left, Output is send down and right.  
+All unconnected sides are equally viable inputs. If a block would get more inputs in one tick, the inputs are processed in this order: Top, Left, Right, Bottom.  
+That mean that if for example `i` block would get 3 input from left, right and bottom in a single tick, only the input from left would be registered since `i` takes only 1 input and left has the highest priority of all those inputs.  
+  
+Blocks don't interact with wire unless explicitly specified.
 
 ### IO
 
@@ -53,93 +68,50 @@ The end point of the program. When any laser hits this blocks, the program ends 
 When laser hits this blocks, user is prompted for a number. All code execution is paused until user types in valid laser value that is then applied to the input laser.
 
 ### Mirrors
-Lasers take 1 tick to go through a mirror
-On the rising edge of recieved current, mirrors rotate.
-Rotation is done clockwise. (\ -> /, ^ -> >, > -> v, v -> <, < -> ^)
-There are 8 mirror blocks:
 
-#### `\`
-Reflects lasers coming from up to right, right to up, down to left and left to down.
+There are 4 mirror blocks:  
+Symbol | Description
+-------|-------------
+`^` | Reflects all lasers up
+`v` | Reflects all lasers down
+`>` | Reflects all lasers right
+`<` | Reflects all lasers left
 
-#### `/`
-Reflects lasers coming from up to left, left to up, down to right and right to down.
+On the rising edge of received current, mirrors rotate.
+When any mirror is triggered by a wire current (rising edge) the mirror rotate according to this table:
 
-#### `^`
-Reflects all incoming lasers up (including lasers from up)
-
-#### `>`
-Reflects all incoming lasers right (including lasers from right)
-
-#### `v`
-Reflects all incoming lasers down (including lasers from down)
-
-#### `<`
-Reflects all incoming lasers left (including lasers from left)
-
-#### `=`
-Reflects laser from left to right and from right to left.
-Used when you need to slow down the laser 1 tick.
-Lasers from up and down are deleted.
-
-#### `H`
-Reflects laser from up to down and from down to up.
-Used when you need to slow down the laser 1 tick.
-Lasers from left and right are deleted.
+From | to
+-----|----
+`^` | `v`
+`v` | `^`
+`<` | `>`
+`>` | `<`
 
 ### Laser modifiers
-the laser modifier character needs to be connected to a output mirror that sets the output direction. all unconnected sides are considered to be equaly viable inputs.  
-Examples:
-```
-m
-v
-```
-Multiplier with inputs from up, left and right. Output is send down.
-```
-i>
-v
-```
-Incrementer with input up and left, Output is send down and right.
 
-#### `*`
-Reflects laser into all connected outputs.
-
-#### `i`
-Increments the laser frequency by 1.
-
-#### `d`
-Decrements the laser frequency by 1.
+#### Regular modifiers:
+Symbol | Description | Number of inputs
+-------|-------------|------------------
+`*` | Reflects laser into all connected outputs. | 1
+`i` | Increments the laser frequency by 1. | 1
+`d` | Decrements the laser frequency by 1. | 1
+`#` | Any laser that hits `#` from any direction gets deleted. | 1
+`m` | Multiplication | 2
+`n` | Division | 2
+`a` | Addition | 2
+`s` | Subtraction | 2
+`l` | Modulo | 2
 
 #### Any of `0123456789ABCDEF`
 Sets the laser frequency to the value (hexadecimal)  
 There is no built in way of setting laser frequency higher
 
-#### `#`
-Any laser that hits `#` from any direction gets deleted.
-
-#### `m`
-Multiplication
-
-#### `n`
-Division
-
-#### `a`
-Addition
-
-#### `s`
-Subtraction
-
-#### `l`
-Modulo
-
 ### Wire
 Wire can transport current.  
-There are 5 wire blocks:
+There are 4 wire blocks:
 
-#### `-`
-Vertical wire.
-
-#### `|`
-Horizontal wire.
+#### `-`, `|`
+Vertical and horizontal wire respectively.
 
 #### `+`
 Wire crossing. Wires are not connected.  
