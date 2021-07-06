@@ -27,6 +27,8 @@ namespace asciiLasers {
 
         private readonly ConsoleColor _defClr;
 
+        private int _currentLineWidth = 0;
+
         /// <summary>
         /// Constructor.
         /// </summary>
@@ -79,8 +81,10 @@ namespace asciiLasers {
         /// <summary>
         /// Is called if a Block was evaluated.
         /// </summary>
-        public void ValuePushed(Block from, Block to) {
+        public void OnBlockEval() {
             _somethingEvaluated = true;
+        }
+        public void ValuePushed(Block from, Block to) {
             _tickedLineA.Add((from.Pos.Item1, from.Pos.Item2, to.Pos.Item1, to.Pos.Item2));
         }
 
@@ -93,6 +97,18 @@ namespace asciiLasers {
             }
         }
 
+        public void Write(char c) {
+            Console.SetCursorPosition(_currentLineWidth, Height + 1);
+            Console.Write(c);
+            _currentLineWidth++;
+        }
+
+        public void WriteLine(int l) {
+            Console.SetCursorPosition(0, Height + 1);
+            for (int i = 0; i < Width; i++) Console.Write(" ");
+            Console.SetCursorPosition(0, Height + 1);
+            Console.WriteLine(l);
+        }
         public void Render() {
             // TODO: this is very ugly
             foreach ((int x2, int y2, int x1, int y1) in _tickedLineB) {
@@ -130,7 +146,7 @@ namespace asciiLasers {
                 }
                 Console.BackgroundColor = _defClr;
             }
-            Console.SetCursorPosition(0, Height + 1);
+            Console.SetCursorPosition(0, Height + 2);
             
             (_tickedLineA, _tickedLineB) = (_tickedLineB, _tickedLineA); // swap
         }

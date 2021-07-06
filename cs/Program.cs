@@ -19,6 +19,7 @@ namespace asciiLasers {
                 tick++;
                 Thread.Sleep(200);
             }
+            board.Eval();
             board.Render();
 
             Console.WriteLine($"Exit code: {board.ExitCode}\nTicks: {tick}");

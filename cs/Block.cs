@@ -53,6 +53,7 @@ namespace asciiLasers {
             if (_queueLen < _maxQueueLen) return; // Dont evaluated if we don't have any inputs
             _queueLen = 0;
             _output   = _calc(Board, _queue);
+            Board.OnBlockEval();
         }
 
         /// <summary>

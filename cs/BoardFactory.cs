@@ -116,12 +116,12 @@ namespace asciiLasers {
                         board.Terminate(queue[0]);
                     return -1;
                 }),
-                '$' => new Block('$', 1, (x, y), (_, queue) => {
-                    //Console.WriteLine(queue[0]);
+                '$' => new Block('$', 1, (x, y), (board, queue) => {
+                    board.WriteLine(queue[0]);
                     return -1;
                 }),
-                '&' => new Block('$', 1, (x, y), (_, queue) => {
-                    //Console.Write((char) queue[0]);
+                '&' => new Block('$', 1, (x, y), (board, queue) => {
+                    board.Write((char) queue[0]);
                     return -1;
                 }),
                 _ => throw new Exception($"'{symbol}' is not supported")
