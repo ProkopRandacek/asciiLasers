@@ -32,11 +32,11 @@ namespace asciiLasers {
         /// <param name="pos">The board coordinates of this block</param>
         /// <param name="calc">This block's logic implementation</param>
         public Block(char symbol, int maxQueueLen, (int, int) pos, Func<Board, int[], int> calc) {
-            Symbol      = symbol;
+            Symbol       = symbol;
             _calc        = calc;
             _maxQueueLen = maxQueueLen;
             _queue       = new int[4];
-            Pos         = pos;
+            Pos          = pos;
 
             OutputDirs = 0;
             Outputs    = new Block[4];

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace asciiLasers {
     public class Board {
-        public Dictionary<(int, int), Block> Blocks;
+        public Block[] Blocks;
 
         public readonly Block   Void;
         public readonly Block   Start;
@@ -27,7 +27,9 @@ namespace asciiLasers {
 
         private readonly ConsoleColor _defClr;
 
-        private int _currentLineWidth = 0;
+        private int  _currentLineWidth = 0;
+
+        private bool _doOutput = false;
 
         /// <summary>
         /// Constructor.
@@ -36,7 +38,7 @@ namespace asciiLasers {
         /// <param name="start">This block is the first one to be evaluated. It also evaluates only once</param>
         /// <param name="void">This block is supposed to eat all input and dont do anything</param>
         /// <param name="sb">This board's symbol board</param>
-        public Board(Dictionary<(int, int), Block> blocks, Block start, Block @void, char[,] sb) {
+        public Board(Block[] blocks, Block start, Block @void, char[,] sb) {
             Blocks      = blocks;
             Start       = start;
             Void        = @void;
@@ -47,8 +49,8 @@ namespace asciiLasers {
         public override string ToString() {
             string str = "";
             str += $"(start: {Start}";
-            foreach (((int x, int y), Block block) in Blocks)
-                str += $"({x}, {y}): {block}";
+            foreach (Block block in Blocks)
+                str += $"({block.Pos.Item2}, {block.Pos.Item2}): {block}";
             return str;
         }
 
@@ -62,10 +64,9 @@ namespace asciiLasers {
         /// Evaluates a single tick.
         /// </summary>
         public void Eval() {
-            foreach ((_, Block block) in Blocks) block.Eval();
-            foreach ((_, Block block) in Blocks) block.PushValue();
-            if (!_somethingEvaluated)
-                Terminate(0);
+            foreach (Block block in Blocks) block.Eval();
+            foreach (Block block in Blocks) block.PushValue();
+            if (!_somethingEvaluated) Terminate(0);
             _somethingEvaluated = false;
         }
 
@@ -85,10 +86,12 @@ namespace asciiLasers {
             _somethingEvaluated = true;
         }
         public void ValuePushed(Block from, Block to) {
+            if (!_doOutput) return;
             _tickedLineA.Add((from.Pos.Item1, from.Pos.Item2, to.Pos.Item1, to.Pos.Item2));
         }
 
         public void InitRender() {
+            if (!_doOutput) return;
             Console.Clear();
             for (int y = 0; y < Height; y++) {
                 for (int x = 0; x < Width; x++)
@@ -98,18 +101,21 @@ namespace asciiLasers {
         }
 
         public void Write(char c) {
+            if (!_doOutput) return;
             Console.SetCursorPosition(_currentLineWidth, Height + 1);
             Console.Write(c);
             _currentLineWidth++;
         }
 
         public void WriteLine(int l) {
+            if (!_doOutput) return;
             Console.SetCursorPosition(0, Height + 1);
             for (int i = 0; i < Width; i++) Console.Write(" ");
             Console.SetCursorPosition(0, Height + 1);
             Console.WriteLine(l);
         }
         public void Render() {
+            if (!_doOutput) return;
             // TODO: this is very ugly
             foreach ((int x2, int y2, int x1, int y1) in _tickedLineB) {
                 (int, int) off = (0, 0);

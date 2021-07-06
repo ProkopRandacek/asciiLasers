@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 
 namespace asciiLasers {
     public static class BoardFactory {
@@ -17,10 +18,10 @@ namespace asciiLasers {
             Block @void = new((char)0, 0, (-1, -1), null);
             (graph, start) = SymbolBoardToGraph(symbolBoard);
 
-            Board board = new(graph, start, @void, symbolBoard);
+            Board board = new(graph.Values.ToArray(), start, @void, symbolBoard);
 
             // Create link from blocks to the board
-            foreach ((_, Block block) in board.Blocks) {
+            foreach (Block block in board.Blocks) {
                 for (int i = 0; i < block.Outputs.Length; i++)
                     block.Outputs[i] ??= board.Void;
                 block.Board = board;

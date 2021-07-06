@@ -44,11 +44,13 @@ this still is ] this is not
 ```
 
 ## Modules
-The AL language documentation is split into modules:
-[core](./core.md)  
-[wire](./wire.md)  
-[file](./file.md)  
-[nets](./nets.md)  
+The AL language documentation is split into modules:  
+[`core`](./core.md)  
+[`wire`](./wire.md)  
+[`strg`](./strg.md)  
+[`func`](./func.md)  
+[`file`](./file.md)  
+[`nets`](./nets.md)  
 
 ## Used symbols
 [Map of used symbols that I try to keep updated](./used.md)

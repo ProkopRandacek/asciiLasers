@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Linq;
-using System.Threading;
 
 namespace asciiLasers {
     internal static class Program {
@@ -17,7 +15,6 @@ namespace asciiLasers {
                 board.Render();
                 board.Eval();
                 tick++;
-                Thread.Sleep(200);
             }
             board.Eval();
             board.Render();
