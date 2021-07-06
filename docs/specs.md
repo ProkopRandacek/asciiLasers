@@ -1,48 +1,45 @@
 # AsciiLaser
 AsciiLaser is interpreted, AsciiDots inspired, text based, case sensitive, visual programming language.  
 The code is being executed on a board of implementation specific size. Tick time is implementation specific. Program is terminated if no block was evaluated last tick (in which case the exit code is 0) or if any laser hit the `}` block in which case the exit code it that lasers value.  
-AL code file extension is `.al`.  
-
-## Comments
-Comments start with `[` and end with `]` every character from `[` to `]` including `[` and `]` are treated as spaces when compiling.  
-Example:
-```
-this is not comment [ but this is
-this is still comment this too and this [ this too
-this still is ] this is not
-```
+AL code file extension is `.al`.
 
 ## Data types
 
 ### Lasers
 Lasers have a frequency (value) between 0 and 2^64 - 1. (unsigned 64 bit int)  
-Lasers frequencies overflow.  
+Laser overflow behavior is implementation specific.  
 Lasers travel instantly on a straight line between 2 blocks (for example between 2 mirrors)  
 Lasers travel over wire blocks without influencing each other.  
 
 ### Current
-Current can only hold 0 or 1.
+Current can only hold 0 or 1.  
 Current moves instantly along the entire wire.  
 When blocks get powered by current, they alter their state (for example mirrors rotate)
 
 ## Blocks
 Block is a single ascii character that has some functionality in the language.  
-All blocks have output mirrors except for mirror blocks  
-Examples:
-```
-m
-v
-```
-Multiplier with inputs from up, left and right. Output is send down.
+  
+All blocks have input and output sides. Output side is every side that has a output mirror on it. All other sides are inputs.
+Example:
 ```
 i>
 v
 ```
-Incrementer with input up and left, Output is send down and right.  
-All unconnected sides are equally viable inputs. If a block would get more inputs in one tick, the inputs are processed in this order: Top, Left, Right, Bottom.  
-That mean that if for example `i` block would get 3 input from left, right and bottom in a single tick, only the input from left would be registered since `i` takes only 1 input and left has the highest priority of all those inputs.  
+`i` with inputs from **top** and **left**. **Right** and **bottom** are both outputs and both will output a value in their direciton if `i` is evaluated.  
+```
+ v
+^i<
+ >
+```
+`i` with no outputs. Output mirrors must be facing **from** the block they are connected to.
+```
+i
+```
+`i` with no outputs.  
   
-Blocks don't interact with wire unless explicitly specified.
+If a block should receive multiple inputs in one tick. The order in which the inputs will be processed by the block is: Up, Left, Right, Bottom.  
+All blocks have input queue of some length. Block is evaluated only on ticks, in which the block filled its queue. For example: `m` takes 2 inputs. It can receive the first input, then n ticks wait and then receive the second input. Only when the second (last) input arrives, is the block evaluated, and is it's output send further. If block receives multiple inputs in a single tick, total number of which would be higher that the number of inputs it requires, all extra inputs are discarded.  
+Blocks don't interact with wire unless explicitly specified.  
 
 ### IO
 
@@ -95,7 +92,7 @@ Symbol | Description | Number of inputs
 `*` | Reflects laser into all connected outputs. | 1
 `i` | Increments the laser frequency by 1. | 1
 `d` | Decrements the laser frequency by 1. | 1
-`#` | Any laser that hits `#` from any direction gets deleted. | 1
+`#` | Never outputs anything | 1
 `m` | Multiplication | 2
 `n` | Division | 2
 `a` | Addition | 2
@@ -143,3 +140,11 @@ O--
 ||
 ```
 
+## Comments
+Comments start with `[` and end with `]` every character from `[` to `]` including `[` and `]` are treated as spaces when compiling.  
+Example:
+```
+this is not comment [ but this is
+this is still comment this too and this [ this too
+this still is ] this is not
+```
