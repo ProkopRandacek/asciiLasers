@@ -1,96 +1,98 @@
 # table of used symbols
-- [x] space
-- [ ] !
-- [ ] "
-- [x] # void
-- [x] $ print ascii char
-- [ ] %
-- [x] & print number
-- [ ] '
-- [ ] (
-- [ ] )
-- [x] * distributes
-- [x] + wire
-- [ ] ,
-- [x] - wire
-- [ ] .
-- [x] / mirror
-- [x] 0 const
-- [x] 1 const
-- [x] 2 const
-- [x] 3 const
-- [x] 4 const
-- [x] 5 const
-- [x] 6 const
-- [x] 7 const
-- [x] 8 const
-- [x] 9 const
-- [x] : internal use only
-- [ ] ;
-- [x] < mirror
-- [x] = mirror
-- [x] > mirror
-- [ ] ?
-- [x] @ button
-- [x] A const
-- [x] B const
-- [x] C const
-- [x] D const
-- [x] E const
-- [x] F const
-- [ ] G
-- [x] H mirror
-- [ ] I
-- [ ] J
-- [ ] K
-- [ ] L
-- [ ] M
-- [ ] N
-- [x] O wire
-- [ ] P
-- [ ] Q
-- [ ] R
-- [ ] S
-- [ ] T
-- [ ] U
-- [ ] V
-- [ ] W
-- [ ] X
-- [ ] Y
-- [ ] Z
-- [x] [ comment
-- [x] \ mirror
-- [x] ] comment
-- [x] ^ mirror
-- [x] _ input
-- [ ] `
-- [x] a addition
-- [ ] b
-- [ ] c
-- [x] d decrement
-- [ ] e
-- [ ] f
-- [ ] g
-- [ ] h
-- [x] i increment
-- [ ] j
-- [ ] k
-- [ ] l
-- [x] m multiply
-- [ ] n
-- [ ] o
-- [ ] p
-- [ ] q
-- [ ] r
-- [x] s subtraction
-- [ ] t
-- [ ] u
-- [ ] v
-- [ ] w
-- [ ] x
-- [ ] y
-- [ ] z
-- [x] { start
-- [x] | wire
-- [x] } termination
-- [ ] ~
+Used | Symbol | Block name
+-----|--------|------------
+X | space | space
+. | `!` |
+. | `"` |
+X | `#` | void
+X | `$` | print ascii char
+. | `%` |
+X | `&` | print number
+. | `'` |
+. | `(` |
+. | `)` |
+X | `*` | distributes
+X | `+` | wire
+. | `,` |
+X | `-` | wire
+. | `.` |
+X | `/` | mirror
+X | `0` | const
+X | `1` | const
+X | `2` | const
+X | `3` | const
+X | `4` | const
+X | `5` | const
+X | `6` | const
+X | `7` | const
+X | `8` | const
+X | `9` | const
+. | `:` |
+. | `;` |
+X | `<` | mirror
+X | `=` | mirror
+X | `>` | mirror
+. | `?` |
+X | `@` | button
+X | `A` | const
+X | `B` | const
+X | `C` | const
+X | `D` | const
+X | `E` | const
+X | `F` | const
+. | `G` | 
+X | `H` | mirror
+. | `I` |
+. | `J` |
+. | `K` |
+. | `L` |
+. | `M` |
+. | `N` |
+X | `O` | wire
+. | `P` |
+. | `Q` |
+. | `R` |
+. | `S` |
+. | `T` |
+. | `U` |
+. | `V` |
+. | `W` |
+. | `X` |
+. | `Y` |
+. | `Z` |
+X | `[` | comment
+X | `\` | mirror
+X | `]` | comment
+X | `^` | mirror
+X | `_` | input
+. | ``` |
+X | `a` | addition
+. | `b` |
+. | `c` |
+X | `d` | decrement
+. | `e` |
+. | `f` |
+. | `g` |
+. | `h` |
+X | `i` | increment
+. | `j` |
+. | `k` |
+. | `l` |
+X | `m` | multiply
+. | `n` |
+. | `o` |
+. | `p` |
+. | `q` |
+. | `r` |
+X | `s` | subtraction
+. | `t` |
+. | `u` |
+. | `v` |
+. | `w` |
+. | `x` |
+. | `y` |
+. | `z` |
+X | `{` | start
+X | `\|`| wire
+X | `}` | termination
+. | `~` |
