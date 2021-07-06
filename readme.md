@@ -1,7 +1,6 @@
 # asciiLasers
 
-Language specification: [specs.md](./docs/specs.md)
-Implementation notes: [implementations.md](./docs/implementation.md)
-Official implementation: [src](https://github.com/ProkopRandacek/asciiLasers/tree/main/src)
-
+Language specification: [specs.md](./docs/specs.md)  
+Implementation: [cs](https://github.com/ProkopRandacek/asciiLasers/tree/main/cs)  
+  
 Un-official implementation in go: [asciiLasers-go](https://github.com/marekmaskarinec/asciiLasers-go)

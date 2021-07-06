@@ -75,7 +75,7 @@ Symbol | Description
 `<` | Reflects all lasers left
 
 On the rising edge of received current, mirrors rotate.
-When any mirror is triggered by a wire current (rising edge) the mirror rotate according to this table:
+When any mirror is triggered by a wire current, the mirror rotates according to this table:
 
 From | to
 -----|----

@@ -14,10 +14,10 @@ namespace asciiLasers {
             Dictionary<(int, int), Block> graph;
 
             Block start;
-            Block @void = new((char)0, 0, null);
+            Block @void = new((char)0, 0, (-1, -1), null);
             (graph, start) = SymbolBoardToGraph(symbolBoard);
 
-            Board board = new(graph, start, @void);
+            Board board = new(graph, start, @void, symbolBoard);
 
             // Create link from blocks to the board
             foreach ((_, Block block) in board.Blocks) {
@@ -81,7 +81,7 @@ namespace asciiLasers {
                 for (int x = 0; x < sb.GetLength(0); x++) {
                     char symbol = sb[x, y];
                     if (symbol == '{') {
-                        start    = CreateBlock(sb, x, y);;
+                        start    = CreateBlock(sb, x, y);
                         startPos = (x, y);
                     } else if (IsBlock(symbol)) blocks[(x, y)]  = CreateBlock(sb, x, y);
                     else if (IsMirror(x, y, sb)) blocks[(x, y)] = CreateMirror(sb, x, y);
@@ -101,27 +101,27 @@ namespace asciiLasers {
         private static Block CreateBlock(char[,] sb, int x, int y) {
             char symbol = sb[x, y];
             Block block = symbol switch {
-                'i' => new Block(symbol, 1, (_, queue) => queue[0] + 1),
-                'd' => new Block(symbol, 1, (_, queue) => queue[0] - 1),
-                'm' => new Block(symbol, 2, (_, queue) => queue[0] * queue[1]),
-                'n' => new Block(symbol, 2, (_, queue) => queue[0] / queue[1]),
-                'a' => new Block(symbol, 2, (_, queue) => queue[0] + queue[1]),
-                's' => new Block(symbol, 2, (_, queue) => queue[0] - queue[1]),
-                'l' => new Block(symbol, 2, (_, queue) => queue[0] % queue[1]),
-                '{' => new Block(symbol, 1, (_, queue) => queue[0]),
-                '*' => new Block(symbol, 1, (_, queue) => queue[0]),
-                '#' => new Block(symbol, 1, (_, _) => -1),
-                '}' => new Block(symbol, 1, (board, queue) => {
+                'i' => new Block(symbol, 1, (x, y), (_, queue) => queue[0] + 1),
+                'd' => new Block(symbol, 1, (x, y), (_, queue) => queue[0] - 1),
+                'm' => new Block(symbol, 2, (x, y), (_, queue) => queue[0] * queue[1]),
+                'n' => new Block(symbol, 2, (x, y), (_, queue) => queue[0] / queue[1]),
+                'a' => new Block(symbol, 2, (x, y), (_, queue) => queue[0] + queue[1]),
+                's' => new Block(symbol, 2, (x, y), (_, queue) => queue[0] - queue[1]),
+                'l' => new Block(symbol, 2, (x, y), (_, queue) => queue[0] % queue[1]),
+                '{' => new Block(symbol, 1, (x, y), (_, queue) => queue[0]),
+                '*' => new Block(symbol, 1, (x, y), (_, queue) => queue[0]),
+                '#' => new Block(symbol, 1, (x, y), (_, _) => -1),
+                '}' => new Block(symbol, 1, (x, y), (board, queue) => {
                     if (queue.Length != 0) // only terminate if laser actually arrived
                         board.Terminate(queue[0]);
                     return -1;
                 }),
-                '$' => new Block('$', 1, (_, queue) => {
-                    Console.WriteLine(queue[0]);
+                '$' => new Block('$', 1, (x, y), (_, queue) => {
+                    //Console.WriteLine(queue[0]);
                     return -1;
                 }),
-                '&' => new Block('$', 1, (_, queue) => {
-                    Console.WriteLine((char) queue[0]);
+                '&' => new Block('$', 1, (x, y), (_, queue) => {
+                    //Console.Write((char) queue[0]);
                     return -1;
                 }),
                 _ => throw new Exception($"'{symbol}' is not supported")
@@ -134,7 +134,7 @@ namespace asciiLasers {
 
         private static Block CreateMirror(char[,] sb, int x, int y) {
             char  symbol = sb[x, y];
-            Block block = new(symbol, 1, (_, queue) => queue[0]) {
+            Block block = new(symbol, 1, (x, y), (_, queue) => queue[0]) {
                 OutputDirs = symbol switch {
                     '>' => (int) DirMask.Right,
                     '<' => (int) DirMask.Left,
@@ -150,22 +150,22 @@ namespace asciiLasers {
         private static Block CreateCons(char[,] sb, int x, int y) {
             char  symbol = sb[x, y];
             Block block = symbol switch {
-                '0' => new Block(symbol, 1, (_, _) => 0),
-                '1' => new Block(symbol, 1, (_, _) => 1),
-                '2' => new Block(symbol, 1, (_, _) => 2),
-                '3' => new Block(symbol, 1, (_, _) => 3),
-                '4' => new Block(symbol, 1, (_, _) => 4),
-                '5' => new Block(symbol, 1, (_, _) => 5),
-                '6' => new Block(symbol, 1, (_, _) => 6),
-                '7' => new Block(symbol, 1, (_, _) => 7),
-                '8' => new Block(symbol, 1, (_, _) => 8),
-                '9' => new Block(symbol, 1, (_, _) => 9),
-                'A' => new Block(symbol, 1, (_, _) => 10),
-                'B' => new Block(symbol, 1, (_, _) => 11),
-                'C' => new Block(symbol, 1, (_, _) => 12),
-                'D' => new Block(symbol, 1, (_, _) => 13),
-                'E' => new Block(symbol, 1, (_, _) => 14),
-                'F' => new Block(symbol, 1, (_, _) => 15),
+                '0' => new Block(symbol, 1, (x, y), (_, _) => 0),
+                '1' => new Block(symbol, 1, (x, y), (_, _) => 1),
+                '2' => new Block(symbol, 1, (x, y), (_, _) => 2),
+                '3' => new Block(symbol, 1, (x, y), (_, _) => 3),
+                '4' => new Block(symbol, 1, (x, y), (_, _) => 4),
+                '5' => new Block(symbol, 1, (x, y), (_, _) => 5),
+                '6' => new Block(symbol, 1, (x, y), (_, _) => 6),
+                '7' => new Block(symbol, 1, (x, y), (_, _) => 7),
+                '8' => new Block(symbol, 1, (x, y), (_, _) => 8),
+                '9' => new Block(symbol, 1, (x, y), (_, _) => 9),
+                'A' => new Block(symbol, 1, (x, y), (_, _) => 10),
+                'B' => new Block(symbol, 1, (x, y), (_, _) => 11),
+                'C' => new Block(symbol, 1, (x, y), (_, _) => 12),
+                'D' => new Block(symbol, 1, (x, y), (_, _) => 13),
+                'E' => new Block(symbol, 1, (x, y), (_, _) => 14),
+                'F' => new Block(symbol, 1, (x, y), (_, _) => 15),
                 _   => throw new ArgumentOutOfRangeException($"'{symbol}' is not supported")
             };
             block.OutputDirs = FindOutputs(sb, x, y);

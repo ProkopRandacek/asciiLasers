@@ -1,16 +1,31 @@
+using System;
 using System.Collections.Generic;
 
 namespace asciiLasers {
     public class Board {
-        public readonly Dictionary<(int, int), Block> Blocks;
+        public Dictionary<(int, int), Block> Blocks;
 
-        public readonly Block Void;
-        public readonly Block Start;
+        public readonly Block   Void;
+        public readonly Block   Start;
+        public readonly char[,] SymbolBoard;
+        
+        public int Width {
+            get { return SymbolBoard.GetLength(0); }
+        }
+
+        public int Height {
+            get { return SymbolBoard.GetLength(1); }
+        }
 
         public  bool ShouldStop { get; private set; }
         public  int  ExitCode   { get; private set; }
 
         private bool _somethingEvaluated;
+
+        private List<(int, int, int, int)> _tickedLineA = new();
+        private List<(int, int, int, int)> _tickedLineB = new();
+
+        private readonly ConsoleColor _defClr;
 
         /// <summary>
         /// Constructor.
@@ -18,10 +33,13 @@ namespace asciiLasers {
         /// <param name="blocks">All regular blocks</param>
         /// <param name="start">This block is the first one to be evaluated. It also evaluates only once</param>
         /// <param name="void">This block is supposed to eat all input and dont do anything</param>
-        public Board(Dictionary<(int, int), Block> blocks, Block start, Block @void) {
-            Blocks = blocks;
-            Start  = start;
-            Void   = @void;
+        /// <param name="sb">This board's symbol board</param>
+        public Board(Dictionary<(int, int), Block> blocks, Block start, Block @void, char[,] sb) {
+            Blocks      = blocks;
+            Start       = start;
+            Void        = @void;
+            SymbolBoard = sb;
+            _defClr     = Console.BackgroundColor;
         }
 
         public override string ToString() {
@@ -46,12 +64,14 @@ namespace asciiLasers {
             foreach ((_, Block block) in Blocks) block.PushValue();
             if (!_somethingEvaluated)
                 Terminate(0);
+            _somethingEvaluated = false;
         }
 
         /// <summary>
         /// Terminates board execution. (The tick is finished)
         /// </summary>
         public void Terminate(int exitCode) {
+            if (ShouldStop) return;
             ShouldStop = true;
             ExitCode   = exitCode;
         }
@@ -59,8 +79,60 @@ namespace asciiLasers {
         /// <summary>
         /// Is called if a Block was evaluated.
         /// </summary>
-        public void BlockEvaluated() {
+        public void ValuePushed(Block from, Block to) {
             _somethingEvaluated = true;
+            _tickedLineA.Add((from.Pos.Item1, from.Pos.Item2, to.Pos.Item1, to.Pos.Item2));
+        }
+
+        public void InitRender() {
+            Console.Clear();
+            for (int y = 0; y < Height; y++) {
+                for (int x = 0; x < Width; x++)
+                    Console.Write(SymbolBoard[x, y]);
+                Console.WriteLine();
+            }
+        }
+
+        public void Render() {
+            // TODO: this is very ugly
+            foreach ((int x2, int y2, int x1, int y1) in _tickedLineB) {
+                (int, int) off = (0, 0);
+                if (x1 == x2) {
+                    if      (y1 < y2) off = (0, 1);
+                    else if (y1 > y2) off = (0, -1);
+                } else if (y1 == y2) {
+                    if      (x1 < x2) off = (1, 0);
+                    else if (x1 > x2) off = (-1, 0);
+                } else throw new ArgumentException("not a line");
+
+                for ((int, int) pos = (x1, y1); !pos.Equals((x2, y2)); pos.Item1 += off.Item1, pos.Item2 += off.Item2) {
+                    Console.SetCursorPosition(pos.Item1, pos.Item2);
+                    Console.Write(SymbolBoard[pos.Item1, pos.Item2]);
+                }
+            }
+            
+            _tickedLineB.Clear();
+            
+            foreach ((int x2, int y2, int x1, int y1) in _tickedLineA) {
+                (int, int) off = (0, 0);
+                if (x1 == x2) {
+                    if      (y1 < y2) off = (0, 1);
+                    else if (y1 > y2) off = (0, -1);
+                } else if (y1 == y2) {
+                    if      (x1 < x2) off = (1, 0);
+                    else if (x1 > x2) off = (-1, 0);
+                } else throw new ArgumentException("not a line");
+
+                Console.BackgroundColor = ConsoleColor.DarkRed;
+                for ((int, int) pos = (x1, y1); !pos.Equals((x2, y2)); pos.Item1 += off.Item1, pos.Item2 += off.Item2) {
+                    Console.SetCursorPosition(pos.Item1, pos.Item2);
+                    Console.Write(SymbolBoard[pos.Item1, pos.Item2]);
+                }
+                Console.BackgroundColor = _defClr;
+            }
+            Console.SetCursorPosition(0, Height + 1);
+            
+            (_tickedLineA, _tickedLineB) = (_tickedLineB, _tickedLineA); // swap
         }
     }
 }
