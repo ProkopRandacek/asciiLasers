@@ -9,7 +9,7 @@ namespace asciiLasers {
 
         public  bool ShouldStop { get; private set; }
         public  int  ExitCode   { get; private set; }
-        
+
         private bool _somethingEvaluated;
 
         /// <summary>

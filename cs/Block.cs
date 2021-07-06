@@ -20,8 +20,9 @@ namespace asciiLasers {
         private readonly int   _maxQueueLen; // Maximal length of the queue
         private readonly int[] _queue;
 
-        private int _queueLen; // How long the queue is right now
-        private int _output;
+        private int _queueLen = 0; // How long the queue is right now
+
+        private int _output = -1;
 
         /// <summary>
         /// Constructor.
@@ -33,7 +34,7 @@ namespace asciiLasers {
             _symbol      = symbol;
             _calc        = calc;
             _maxQueueLen = maxQueueLen;
-            _queue       = new int[3];
+            _queue       = new int[4];
 
             OutputDirs = 0;
             Outputs    = new Block[4];
@@ -57,10 +58,14 @@ namespace asciiLasers {
         /// Pushes the calculated output into output blocks.
         /// </summary>
         public void PushValue() {
-            if (_output == -1) return; // don't send output if we have dont have one
-            for (int i = 0; i < 4; i++) // for each direction
-                if ((OutputDirs & (1 << i)) != 0) // if that direction is enabled
+            if (_output == -1) return;              // don't send output if we have dont have one
+            for (int i = 0; i < 4; i++)             // for each direction
+                if ((OutputDirs & (1 << i)) != 0) { // if that direction is enabled
+                    //Console.WriteLine($"{_symbol} pushed {_output} to {Outputs[i]._symbol}");
                     Outputs[i].AddToQueue(_output); // push value there
+                }
+
+            _output = -1;
         }
 
         /// <summary>
