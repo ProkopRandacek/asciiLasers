@@ -48,7 +48,7 @@ namespace asciiLasers {
         /// Calculates the output value from queue. Doesn't push output to other blocks.
         /// </summary>
         public void Eval() {
-            if (_queueLen == 0) return; // Dont evaluated if we don't have any inputs
+            if (_queueLen < _maxQueueLen) return; // Dont evaluated if we don't have any inputs
             _queueLen = 0;
             _output   = _calc(Board, _queue);
             Board.BlockEvaluated();

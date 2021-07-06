@@ -1,7 +1,7 @@
 # AsciiLaser
 AsciiLaser is interpreted, AsciiDots inspired, text based, case sensitive, visual programming language.  
-The code is being executed on a board of unlimited size. Tick time is not constant, they are executed as fast as possible unless in debug mode. Program is terminated if there are no more lasers traveling or any laser hits the `}` block.
-AL code file extension is `.al`.
+The code is being executed on a board of implementation specific size. Tick time is implementation specific. Program is terminated if no block was evaluated last tick (in which case the exit code is 0) or if any laser hit the `}` block in which case the exit code it that lasers value.  
+AL code file extension is `.al`.  
 
 ## Comments
 Comments start with `[` and end with `]` every character from `[` to `]` including `[` and `]` are treated as spaces when compiling.  
