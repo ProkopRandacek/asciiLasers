@@ -1,11 +1,12 @@
 using System;
 
 namespace asciiLasers {
+	[Flags]
     public enum DirMask {
-        Up    = 0b0001,
-        Right = 0b0010,
-        Down  = 0b0100,
-        Left  = 0b1000
+        Up    = 1,
+        Right = 2,
+        Down  = 4,
+        Left  = 8,
     }
     
     public class Block {

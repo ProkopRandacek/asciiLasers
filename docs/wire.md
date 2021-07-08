@@ -16,7 +16,7 @@ A   | B
 `m` | `n`
 
 Wire can transport current.  
-There are 4 wire blocks:
+There are 5 wire blocks:
 
 #### `@`
 Laser detector. Interacts with Laser the same exact way as a `*` block does. But unlike `*`, `@` sends signal over any connected wire when it gets evaluated.
@@ -26,7 +26,7 @@ Example:
          O----------^
 {> > v   |
      @---+--O
-	 v   |  |
+     v   |  |
    ^ <   O--O
 ```
 A detector that gets activated every 5 ticks. It rotates a connected mirror.

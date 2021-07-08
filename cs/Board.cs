@@ -8,12 +8,12 @@ namespace asciiLasers {
         public readonly Block   Void;
         public readonly Block   Start;
         public readonly char[,] SymbolBoard;
-        
-        public int Width {
+
+        private int Width {
             get { return SymbolBoard.GetLength(0); }
         }
 
-        public int Height {
+        private int Height {
             get { return SymbolBoard.GetLength(1); }
         }
 
@@ -27,9 +27,9 @@ namespace asciiLasers {
 
         private readonly ConsoleColor _defClr;
 
-        private int  _currentLineWidth = 0;
+        private int  _currentLineWidth;
 
-        private bool _doOutput = false;
+        private const bool DoOutput = false;
 
         /// <summary>
         /// Constructor.
@@ -86,12 +86,12 @@ namespace asciiLasers {
             _somethingEvaluated = true;
         }
         public void ValuePushed(Block from, Block to) {
-            if (!_doOutput) return;
+            if (!DoOutput) return;
             _tickedLineA.Add((from.Pos.Item1, from.Pos.Item2, to.Pos.Item1, to.Pos.Item2));
         }
 
         public void InitRender() {
-            if (!_doOutput) return;
+            if (!DoOutput) return;
             Console.Clear();
             for (int y = 0; y < Height; y++) {
                 for (int x = 0; x < Width; x++)
@@ -101,21 +101,21 @@ namespace asciiLasers {
         }
 
         public void Write(char c) {
-            if (!_doOutput) return;
+            if (!DoOutput) return;
             Console.SetCursorPosition(_currentLineWidth, Height + 1);
             Console.Write(c);
             _currentLineWidth++;
         }
 
         public void WriteLine(int l) {
-            if (!_doOutput) return;
+            if (!DoOutput) return;
             Console.SetCursorPosition(0, Height + 1);
             for (int i = 0; i < Width; i++) Console.Write(" ");
             Console.SetCursorPosition(0, Height + 1);
             Console.WriteLine(l);
         }
         public void Render() {
-            if (!_doOutput) return;
+            if (!DoOutput) return;
             // TODO: this is very ugly
             foreach ((int x2, int y2, int x1, int y1) in _tickedLineB) {
                 (int, int) off = (0, 0);
