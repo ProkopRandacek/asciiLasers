@@ -1,0 +1,13 @@
+#!/bin/sh
+git clone git://git.ucw.cz/libucw.git
+cd libucw
+
+curl https://randacek.dev/dl/ucw-patch | git apply -- &&
+./configure &&
+make &&
+sudo make install
+
+cd ..
+rm libucw -rf
+
+echo libucw installed successfully
