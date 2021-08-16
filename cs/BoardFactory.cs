@@ -34,7 +34,7 @@ namespace asciiLasers {
 
             return board;
         }
-        
+
         private static char[,] FileToSymbolBoard(string filename) {
             string data   = "";
             int    width  = 0;
@@ -46,9 +46,10 @@ namespace asciiLasers {
                     data += symbol;
                     if (symbol == '\n') {
                         height++;
-                        width = Math.Max(width, currentWidth);
-                        currentWidth  = 0;
-                    } else
+                        width        = Math.Max(width, currentWidth);
+                        currentWidth = 0;
+                    }
+                    else
                         currentWidth++;
                 }
             }
@@ -63,7 +64,8 @@ namespace asciiLasers {
                 if (c == '\n') {
                     x = 0;
                     y++;
-                } else {
+                }
+                else {
                     symbolBoard[x, y] = c;
                     x++;
                 }
@@ -84,7 +86,8 @@ namespace asciiLasers {
                     if (symbol == '{') {
                         start    = CreateBlock(sb, x, y);
                         startPos = (x, y);
-                    } else if (IsBlock(symbol)) blocks[(x, y)]  = CreateBlock(sb, x, y);
+                    }
+                    else if (IsBlock(symbol)) blocks[(x, y)]    = CreateBlock(sb, x, y);
                     else if (IsMirror(x, y, sb)) blocks[(x, y)] = CreateMirror(sb, x, y);
                     else if (IsConst(symbol)) blocks[(x, y)]    = CreateCons(sb, x, y);
                 }
@@ -122,7 +125,7 @@ namespace asciiLasers {
                     return -1;
                 }),
                 '&' => new Block('$', 1, (x, y), (board, queue) => {
-                    board.Write((char) queue[0]);
+                    board.Write((char)queue[0]);
                     return -1;
                 }),
                 _ => throw new Exception($"'{symbol}' is not supported")
@@ -134,13 +137,13 @@ namespace asciiLasers {
         }
 
         private static Block CreateMirror(char[,] sb, int x, int y) {
-            char  symbol = sb[x, y];
+            char symbol = sb[x, y];
             Block block = new(symbol, 1, (x, y), (_, queue) => queue[0]) {
                 OutputDirs = symbol switch {
-                    '>' => (int) DirMask.Right,
-                    '<' => (int) DirMask.Left,
-                    '^' => (int) DirMask.Up,
-                    'v' => (int) DirMask.Down,
+                    '>' => (int)DirMask.Right,
+                    '<' => (int)DirMask.Left,
+                    '^' => (int)DirMask.Up,
+                    'v' => (int)DirMask.Down,
                     _   => throw new ArgumentOutOfRangeException($"'{symbol}' is not supported")
                 }
             };
@@ -149,7 +152,7 @@ namespace asciiLasers {
         }
 
         private static Block CreateCons(char[,] sb, int x, int y) {
-            char  symbol = sb[x, y];
+            char symbol = sb[x, y];
             Block block = symbol switch {
                 '0' => new Block(symbol, 1, (x, y), (_, _) => 0),
                 '1' => new Block(symbol, 1, (x, y), (_, _) => 1),
@@ -175,32 +178,38 @@ namespace asciiLasers {
 
         private static int FindOutputs(char[,] sb, int x, int y) {
             int mask = 0;
-            if (((x - 1) >= 0             ) && (sb[x - 1, y] == '<')) mask |= (int) DirMask.Left;
-            if (((x + 1) < sb.GetLength(0)) && (sb[x + 1, y] == '>')) mask |= (int) DirMask.Right;
-            if (((y - 1) >= 0             ) && (sb[x, y - 1] == '^')) mask |= (int) DirMask.Up;
-            if (((y + 1) < sb.GetLength(1)) && (sb[x, y + 1] == 'v')) mask |= (int) DirMask.Down;
+            
+            if (((x - 1) >= 0) && (sb[x - 1, y] == '<')) mask              |= (int)DirMask.Left;
+            if (((x + 1) < sb.GetLength(0)) && (sb[x + 1, y] == '>')) mask |= (int)DirMask.Right;
+            if (((y - 1) >= 0) && (sb[x, y - 1] == '^')) mask              |= (int)DirMask.Up;
+            if (((y + 1) < sb.GetLength(1)) && (sb[x, y + 1] == 'v')) mask |= (int)DirMask.Down;
+            
             return mask;
         }
 
-        private static Block[] FindOutputBlocks(IReadOnlyDictionary<(int, int), Block> blocks, int bx, int by, int width, int height) {
+        private static Block[] FindOutputBlocks(IReadOnlyDictionary<(int, int), Block> blocks, int bx, int by,
+                                                int                                    width,  int height) {
             // TODO: use not stupid approach
             Block[] outputs = { null, null, null, null };
-            
+
             for (int x = bx - 1; x >= 0; x--) { // Left
                 if (!blocks.ContainsKey((x, by))) continue;
                 outputs[3] = blocks[(x, by)];
                 break;
             }
+
             for (int x = bx + 1; x < width; x++) { // Right
                 if (!blocks.ContainsKey((x, by))) continue;
                 outputs[1] = blocks[(x, by)];
                 break;
             }
+
             for (int y = by + 1; y < height; y++) { // Down
                 if (!blocks.ContainsKey((bx, y))) continue;
                 outputs[2] = blocks[(bx, y)];
                 break;
             }
+
             for (int y = by - 1; y >= 0; y--) { // Up
                 if (!blocks.ContainsKey((bx, y))) continue;
                 outputs[0] = blocks[(bx, y)];
@@ -210,18 +219,24 @@ namespace asciiLasers {
             return outputs;
         }
 
-        private static bool IsBlock(char c) => Blocks.Contains(c);
-        
-        private static bool IsConst(char c) => Consts.Contains(c);
+        private static bool IsBlock(char c) {
+            return Blocks.Contains(c);
+        }
 
-        private static bool IsBlockOrConstOrStart(char c) => Blocks.Contains(c) || Consts.Contains(c) || c == '{';
+        private static bool IsConst(char c) {
+            return Consts.Contains(c);
+        }
+
+        private static bool IsBlockOrConstOrStart(char c) {
+            return Blocks.Contains(c) || Consts.Contains(c) || (c == '{');
+        }
 
         private static bool IsMirror(int x, int y, char[,] sb) {
             char c = sb[x, y];
             if (!Mirrors.Contains(c)) return false;
             switch (c) { // check if it is not *output* mirror
-                case 'v' when IsBlockOrConstOrStart(SafeSymbolGet(sb, x, y - 1)):
-                case '^' when IsBlockOrConstOrStart(SafeSymbolGet(sb, x, y + 1)):
+                case 'v' when IsBlockOrConstOrStart(SafeSymbolGet(sb, x,     y - 1)):
+                case '^' when IsBlockOrConstOrStart(SafeSymbolGet(sb, x,     y + 1)):
                 case '>' when IsBlockOrConstOrStart(SafeSymbolGet(sb, x - 1, y)):
                 case '<' when IsBlockOrConstOrStart(SafeSymbolGet(sb, x + 1, y)):
                     return false;
@@ -231,7 +246,7 @@ namespace asciiLasers {
         }
 
         private static char SafeSymbolGet(char[,] sb, int x, int y) {
-            int width = sb.GetLength(0);
+            int width  = sb.GetLength(0);
             int height = sb.GetLength(1);
             if ((x >= width) || (x < 0)) return ' ';
             if ((y >= height) || (y < 0)) return ' ';

@@ -5,9 +5,9 @@ namespace asciiLasers {
         private static void Main(string[] argv) {
             string filename = argv.Length == 0 ? "./main.al" : argv[0];
             Console.Clear();
-            
+
             Board board = BoardFactory.CreateBoardFromFile(filename);
-            
+
             board.Init();
             board.InitRender();
             int tick = 0;
@@ -16,6 +16,7 @@ namespace asciiLasers {
                 board.Eval();
                 tick++;
             }
+
             board.Eval();
             board.Render();
 
