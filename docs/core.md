@@ -39,10 +39,14 @@ Same as `$` but prints value as ascii character and no newline is inserted.
 Only 8 least significant bits are used for the value.
 
 ### `{`
-The start point of the program. Sends a laser to the right with frequency of 1 through all of its output mirrors.
+The start point of a region.  
+If in global scope, emits a value of `1` and then is inactive for the rest of the execution.  
+If inside a function region, acts as a input for the function. When any laser hits the function call, this block emits a laser with the same value.
 
 ### `}`
-The end point of the program. When any laser hits this blocks, the program ends execution and that laser's value gets used as exit code.
+The end point of a region.  
+If in global scope, terminates the program on any laser interaction and uses the laser value as a exit code.  
+If inside a function, transports incoming lasers into the function call block where they are emitted.
 
 ### `_`
 When laser hits this blocks, a single byte is read from stdin. If there is no byte on stdin, the evaluation of this block waits until there is one.

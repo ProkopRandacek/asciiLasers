@@ -1,7 +1,7 @@
 # table of used symbols
 Used | Symbol | Block name
 -----|--------|------------
-X | space | space
+X | ` ` | empty
 . | `!` |
 . | `"` |
 X | `#` | void
@@ -11,12 +11,12 @@ X | `&` | print number
 . | `'` |
 . | `(` |
 . | `)` |
-X | `*` | distributes
+X | `*` | dummy
 X | `+` | wire
 . | `,` |
 X | `-` | wire
 . | `.` |
-X | `/` | mirror
+X | `/` | region corner
 X | `0` | const
 X | `1` | const
 X | `2` | const
@@ -41,7 +41,7 @@ X | `D` | const
 X | `E` | const
 X | `F` | const
 . | `G` | 
-X | `H` | mirror
+. | `H` | 
 . | `I` |
 . | `J` |
 . | `K` |
@@ -60,9 +60,9 @@ X | `O` | wire
 . | `X` |
 . | `Y` |
 . | `Z` |
-X | `[` | comment
-X | `\` | mirror
-X | `]` | comment
+X | `[` | comment start
+X | `\` | region corner
+X | `]` | comment end
 X | `^` | mirror
 X | `_` | input
 . | ``` |
@@ -71,7 +71,7 @@ X | `a` | addition
 . | `c` |
 X | `d` | decrement
 . | `e` |
-. | `f` |
+. | `f` | function call
 . | `g` |
 . | `h` |
 X | `i` | increment
@@ -92,7 +92,7 @@ X | `s` | subtraction
 . | `x` |
 . | `y` |
 . | `z` |
-X | `{` | start
+X | `{` | region input
 X | `\|`| wire
-X | `}` | termination
+X | `}` | region output
 . | `~` |

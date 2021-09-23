@@ -1,7 +1,45 @@
 # AsciiLaser
 AsciiLaser is interpreted, AsciiDots inspired, text based, case sensitive, visual programming language.  
-The code is being executed on a board of implementation specific size. Tick time is implementation specific. Program is terminated if no block was evaluated last tick (in which case the exit code is 0) or if any laser hit the `}` block in which case the exit code it that lasers value.  
+The code is being executed on a board of implementation specific maximum size. Tick time is implementation specific. If there are no lasers anywhere on the board, the program exits with exit code 1. Otherwise the program exits when a value is retuned from the global region.
 AL code file extension is `.al`.
+
+## Regions
+AL code is split into regions. Every file contains a global region which contains everything inside the file. In the global region can be defined blocks and other regions. These are then considered to have a global scope. Program entry point is a `{` with a global scope and global scope `}` is considered its exit point which terminates all execution.
+  
+Regions cannot be defined inside other regions (except the global region).
+  
+Regions are rectangle areas on the board determined by special characters in its corners.  
+
+Character | Meaning
+----------|--------
+`/`       | Top-left & bottom right corner
+`\`       | Top-right & bottom left corner
+
+There can be no blocks at the region border, except for function signatures (see [`func`](./func.md)).  
+  
+A Region can be then defined as:  
+```
+Outside
+/           \
+ inside
+ also inside
+  unsafe -->x
+\           /
+```
+
+All block on a border of a region are replaced by `#`. The above example is interpreted the same way as this:
+
+```
+Outside
+/###########\
+#inside     #
+#also inside#
+# unsafe -->#
+\###########/
+```
+(You can fill the border with `#` yourself, if you want to clarify the border of larger regions)  
+  
+Every region has to have a input (`{`) and an output (`}`) (see [`core`](./core.md)).  
 
 ## Lasers
 Laser is the main datatype used in AL.  
@@ -45,12 +83,16 @@ this still is ] this is not
 
 ## Modules
 The AL language documentation is split into modules:  
-[`core`](./core.md)  
-[`wire`](./wire.md)  
-[`strg`](./strg.md)  
-[`func`](./func.md)  
-[`file`](./file.md)  
-[`nets`](./nets.md)  
+
+Module | Description
+-------|------------
+[`main`](./main.md) | Elementar language structure
+[`core`](./core.md) | Core blocks
+[`wire`](./wire.md) | Wire and current constructs
+[`strg`](./strg.md) | String manipulation
+[`func`](./func.md) | Functions
+[`file`](./file.md) | File I/O
+[`nets`](./nets.md) | Networking
 
 ## Used symbols
 [Map of used symbols that I try to keep updated](./used.md)
