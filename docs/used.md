@@ -77,9 +77,9 @@ X | `d` | decrement
 X | `i` | increment
 . | `j` |
 . | `k` |
-. | `l` |
+X | `l` | modulo
 X | `m` | multiply
-. | `n` |
+X | `n` | divide
 . | `o` |
 . | `p` |
 . | `q` |
