@@ -2,7 +2,7 @@
 Used | Symbol | Block name
 -----|--------|------------
 X | ` ` | empty
-. | `!` |
+X | `!` | function call
 . | `"` |
 X | `#` | void
 X | `$` | print ascii char
@@ -27,12 +27,12 @@ X | `6` | const
 X | `7` | const
 X | `8` | const
 X | `9` | const
-. | `:` |
+X | `:` | duplicator
 . | `;` |
 X | `<` | mirror
-X | `=` | mirror
+X | `=` | equality check
 X | `>` | mirror
-. | `?` |
+. | `?` | compare
 X | `@` | button
 X | `A` | const
 X | `B` | const

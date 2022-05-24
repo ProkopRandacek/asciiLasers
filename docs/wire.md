@@ -1,10 +1,7 @@
 # AL Wire
-The wire module adds the Current data type and wires that can modify the behavior of blocks at runtime.
 
 ### Current
-Current can only hold 1 (on) or 0 (off).  
-Current moves instantly along the entire wire.  
-When blocks get powered by current (rising edge), it alters its state either from A to B or B to A:
+Current is a pulse. It moves instantly along the entire wire. When block gets powered by current, it alters its state either from A to B or B to A:
 
 A   | B
 ----|----
@@ -19,8 +16,8 @@ Wire can transport current.
 There are 5 wire blocks:
 
 #### `@`
-Laser detector. Interacts with Laser the same exact way as a `*` block does. But unlike `*`, `@` sends signal over any connected wire when it gets evaluated.
-  
+Laser detector. Interacts with Laser the same exact way as a `*` block does. But unlike `*`, `@` sends pulse over any connected wire when it gets evaluated.
+
 Example:  
 ```
          O----------^
@@ -30,6 +27,11 @@ Example:
    ^ <   O--O
 ```
 A detector that gets activated every 5 ticks. It rotates a connected mirror.
+
+// TODO: demonstrate double button single tick double state switch
+
+#### `z`
+Like `@` but ignores lasers that have zero value.
 
 #### `-`, `|`
 Vertical and horizontal wire respectively.

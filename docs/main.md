@@ -1,52 +1,13 @@
 # AsciiLaser
-AsciiLaser is interpreted, AsciiDots inspired, text based, case sensitive, visual programming language.  
-The code is being executed on a board of implementation specific maximum size. Tick time is implementation specific. If there are no lasers anywhere on the board, the program exits with exit code 1. Otherwise the program exits when a value is retuned from the global region.
+AsciiLaser is text based visual programming language.
+The code is being executed on a board and terminates when the `}` is hit or when there are not lasers on the board
 AL code file extension is `.al`.
-
-## Regions
-AL code is split into regions. Every file contains a global region which contains everything inside the file. In the global region can be defined blocks and other regions. These are then considered to have a global scope. Program entry point is a `{` with a global scope and global scope `}` is considered its exit point which terminates all execution.
-  
-Regions cannot be defined inside other regions (except the global region).
-  
-Regions are rectangle areas on the board determined by special characters in its corners.  
-
-Character | Meaning
-----------|--------
-`/`       | Top-left & bottom right corner
-`\`       | Top-right & bottom left corner
-
-There can be no blocks at the region border, except for function signatures (see [`func`](./func.md)).  
-  
-A Region can be then defined as:  
-```
-Outside
-/           \
- inside
- also inside
-  unsafe -->x
-\           /
-```
-
 All block on a border of a region are replaced by `#`. The above example is interpreted the same way as this:
 
-```
-Outside
-/###########\
-#inside     #
-#also inside#
-# unsafe -->#
-\###########/
-```
-(You can fill the border with `#` yourself, if you want to clarify the border of larger regions)  
-  
-Every region has to have a input (`{`) and an output (`}`) (see [`core`](./core.md)).  
-
 ## Lasers
-Laser is the main datatype used in AL.  
-Lasers have a frequency (value) between 0 and 2^64 - 1. (unsigned 64 bit int)  
-Laser overflow behavior is implementation specific.  
-Lasers travel instantly on a straight line between 2 blocks (for example between 2 mirrors)  
-Lasers travel over wire blocks without influencing each other.  
+Lasers have a frequency between 0 and 2^64 - 1.
+Lasers travel instantly on a straight line between 2 blocks (for example between 2 mirrors).
+Lasers travel over wire blocks without influencing each other.
 
 ## Blocks
 Block is a single ascii character that has some functionality in the language.  
@@ -89,10 +50,7 @@ Module | Description
 [`main`](./main.md) | Elementar language structure
 [`core`](./core.md) | Core blocks
 [`wire`](./wire.md) | Wire and current constructs
-[`strg`](./strg.md) | String manipulation
-[`func`](./func.md) | Functions
-[`file`](./file.md) | File I/O
-[`nets`](./nets.md) | Networking
+[`list`](./list.md) | Sequences in AL
 
 ## Used symbols
 [Map of used symbols that I try to keep updated](./used.md)
